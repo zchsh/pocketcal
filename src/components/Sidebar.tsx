@@ -199,7 +199,7 @@ function Sidebar() {
     return (
       <div className="sidebar-footer-buttons">
         <a
-          href="https://www.patreon.com/cassidoo"
+          href="https://github.com/cassidoo/pocketcal"
           target="_blank"
           className="footer-button"
         >
