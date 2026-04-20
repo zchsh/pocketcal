@@ -216,9 +216,9 @@ function Sidebar() {
           Pocket<span className="logo-cal">Cal</span>{" "}
           {isProUser && <span className="pro-badge">Pro</span>}
         </h1>
-        <a href="/" target="_blank" className="new-link">
+        {/*<a href="/" target="_blank" className="new-link">
           New ↗
-        </a>
+        </a>*/}
       </div>
 
       <h3>
