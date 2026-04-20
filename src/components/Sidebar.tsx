@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, PropsWithChildren } from "react";
 import { useStore, EventGroup, getMaxGroups, DecodedAppState } from "../store";
 import { format, isBefore } from "date-fns";
 import CalIcon from "./icons/CalIcon";
@@ -9,6 +9,8 @@ import SaveIcon from "./icons/SaveIcon";
 import MergeIcon from "./icons/MergeIcon";
 import PlusIcon from "./icons/PlusIcon";
 import SettingsIcon from "./icons/SettingsIcon";
+// import ChevronIcon from "./icons/ChevronIcon";
+// import Collapsible from "./Collapsible";
 import HelpIcon from "./icons/HelpIcon";
 import CopyIcon from "./icons/CopyIcon";
 import { decodeStateFromHash } from "../store";
@@ -328,89 +330,122 @@ function Sidebar() {
           >
             <PlusIcon height={18} /> Add new calendar
           </button>
-          <h3>
-            <MergeIcon height={20} /> Merge calendars
-          </h3>
-          <div className="setting-item">
-            <label htmlFor="add-from-url-input">PocketCal URL:</label>
-            <input
-              type="text"
-              id="add-from-url-input"
-              value={rawUrlInput}
-              onChange={handleUrlInputChange}
-            />
-          </div>
-          {urlInputError ? (
-            <p className="input-error-message">
-              Dang it, we can't seem to parse this URL.
-              <br />
-              Please enter a valid PocketCal URL.
-            </p>
-          ) : null}
-          <button
-            className="add-group-button"
-            onClick={handleAddFromUrl}
-            disabled={!!editingGroup}
-          >
-            <PlusIcon height={18} /> Add calendars from URL
-          </button>
         </>
       )}
 
-      <>
-        <h3>
-          <SettingsIcon height={20} /> Settings
-        </h3>
-        <div className="setting-item">
-          <label htmlFor="start-date">Start Month:</label>
-          <input
-            type="month"
-            id="start-date"
-            value={
-              isValidDate(rawStartDate)
-                ? format(startDate, "yyyy-MM")
-                : rawStartDate
-            }
-            onChange={handleStartDateChange}
-          />
-        </div>
-        <div className="setting-item">
-          <label htmlFor="first-day-of-week">Start the Week on:</label>
-          <select
-            id="first-day-of-week"
-            value={firstDayOfWeek}
-            onChange={(e) => setFirstDayOfWeek(Number(e.target.value) as 0 | 1)}
-          >
-            <option value={0}>Sunday</option>
-            <option value={1}>Monday</option>
-          </select>
-        </div>
-        <div className="setting-item">
-          <label htmlFor="include-weekends">Include Weekends:</label>
-          <input
-            type="checkbox"
-            id="include-weekends"
-            checked={includeWeekends}
-            onChange={(e) => setIncludeWeekends(e.target.checked)}
-          />
-        </div>
-        <div className="setting-item">
-          <label htmlFor="show-today">Highlight Today:</label>
-          <input
-            type="checkbox"
-            id="show-today"
-            checked={showToday}
-            onChange={(e) => setShowToday(e.target.checked)}
-          />
-        </div>
-      </>
-
       <div className="sidebar-footer">
-        {creatorLink()}
         {helpAndCopy()}
+        {creatorLink()}
+      </div>
+
+      <h3>
+        <MergeIcon height={20} /> Merge calendars
+      </h3>
+      <div className="setting-item">
+        <label htmlFor="add-from-url-input">PocketCal URL:</label>
+        <input
+          type="text"
+          id="add-from-url-input"
+          value={rawUrlInput}
+          onChange={handleUrlInputChange}
+        />
+      </div>
+      {urlInputError ? (
+        <p className="input-error-message">
+          Dang it, we can't seem to parse this URL.
+          <br />
+          Please enter a valid PocketCal URL.
+        </p>
+      ) : null}
+      <button
+        className="add-group-button"
+        onClick={handleAddFromUrl}
+        disabled={!!editingGroup}
+      >
+        <PlusIcon height={18} /> Add calendars from URL
+      </button>
+
+      <h3>
+        <SettingsIcon height={20} /> Settings
+      </h3>
+      <div className="setting-item">
+        <label htmlFor="start-date">Start Month:</label>
+        <input
+          type="month"
+          id="start-date"
+          value={
+            isValidDate(rawStartDate)
+              ? format(startDate, "yyyy-MM")
+              : rawStartDate
+          }
+          onChange={handleStartDateChange}
+        />
+      </div>
+      <div className="setting-item">
+        <label htmlFor="first-day-of-week">Start the Week on:</label>
+        <select
+          id="first-day-of-week"
+          value={firstDayOfWeek}
+          onChange={(e) => setFirstDayOfWeek(Number(e.target.value) as 0 | 1)}
+        >
+          <option value={0}>Sunday</option>
+          <option value={1}>Monday</option>
+        </select>
+      </div>
+      <div className="setting-item">
+        <label htmlFor="include-weekends">Include Weekends:</label>
+        <input
+          type="checkbox"
+          id="include-weekends"
+          checked={includeWeekends}
+          onChange={(e) => setIncludeWeekends(e.target.checked)}
+        />
+      </div>
+      <div className="setting-item">
+        <label htmlFor="show-today">Highlight Today:</label>
+        <input
+          type="checkbox"
+          id="show-today"
+          checked={showToday}
+          onChange={(e) => setShowToday(e.target.checked)}
+        />
       </div>
     </div>
   );
 }
+
+// function CollapsibleSection({
+//   children,
+//   headingSlot,
+//   labelToShow,
+//   labelToHide,
+//   defaultCollapsed,
+// }: PropsWithChildren<{
+//   defaultCollapsed?: boolean;
+//   headingSlot: React.ReactNode;
+//   labelToShow: string;
+//   labelToHide: string;
+// }>) {
+//   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed ?? true);
+
+//   return (
+//     <div>
+//       <h3 data-is-collapsed={isCollapsed}>
+//         {headingSlot}
+
+//         <button
+//           className="collapsible-toggle"
+//           data-is-collapsed={isCollapsed}
+//           onClick={() => setIsCollapsed(!isCollapsed)}
+//           aria-label={isCollapsed ? labelToShow : labelToHide}
+//           aria-expanded={!isCollapsed}
+//         >
+//           <ChevronIcon color="black" />
+//         </button>
+//       </h3>
+//       <Collapsible isCollapsed={isCollapsed}>{children}</Collapsible>
+//     </div>
+//   );
+// }
 
 export default Sidebar;

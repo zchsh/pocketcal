@@ -1,0 +1,12 @@
+.g-collapsible--root {
+    /* Note: we set --initial-height and --initial-overflow on the first render.
+     On subsequent renders, they're set through inline styles via JavaScript. */
+    overflow: var(--initial-overflow);
+    height: var(--initial-height);
+    transition: height 0.3s;
+}
+
+.g-collapsible--inner {
+    opacity: 1;
+    transition: opacity 0.3s;
+}

@@ -47,6 +47,10 @@
     border-bottom: 1px solid #eee;
     padding-bottom: 5px;
     font-weight: 500;
+
+    &[data-is-collapsed="true"] {
+        border-bottom-color: transparent;
+    }
 }
 
 h2 {
@@ -229,7 +233,7 @@ input[type="text"].group-name-input {
 }
 
 .sidebar-footer {
-    margin-top: auto;
+    margin-top: 1.5rem;
 }
 
 .sidebar-footer-buttons {
@@ -259,4 +263,29 @@ input[type="text"].group-name-input {
 
 .footer-button:active {
     background-color: #d0d0d0;
+}
+
+button.collapsible-toggle {
+    padding: 8px 8px 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transform: rotate(-180deg);
+    transition: transform 0.2s;
+
+    & svg {
+        display: block;
+        margin: 0;
+    }
+}
+
+.collapsible-toggle[data-is-collapsed="true"] {
+    transform: rotate(0deg);
 }
