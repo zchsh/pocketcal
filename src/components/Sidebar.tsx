@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useStore, EventGroup, getMaxGroups } from "../store";
-import { format } from "date-fns";
+import { useStore, EventGroup, getMaxGroups, DecodedAppState } from "../store";
+import { format, isBefore } from "date-fns";
 import CalIcon from "./icons/CalIcon";
 import PencilIcon from "./icons/PencilIcon";
 import TrashIcon from "./icons/TrashIcon";
@@ -115,32 +115,54 @@ function Sidebar() {
 
   const handleAddFromUrl = () => {
     // Extract the data string from the pasted URL
-    let parsedEventGroups: Pick<EventGroup, "name" | "color" | "ranges">[] = [];
+    let decodedState: DecodedAppState;
     try {
       const dataHash = rawUrlInput.split("#")[1];
       if (dataHash === undefined) {
         throw new Error("Error: could not extract data hash from URL");
       }
-      const decodedState = decodeStateFromHash(dataHash);
-      if (decodedState === null) {
+      const rawDecodedState = decodeStateFromHash(dataHash);
+      if (rawDecodedState === null) {
         throw new Error(
           "Error: could not decode state from data hash: " + dataHash,
         );
       }
-      // Set parsed event groups from the decoded state
-      parsedEventGroups = decodedState.eventGroups;
+      decodedState = rawDecodedState;
     } catch (error) {
-      // TODO maybe show error instead somehow, console.error is too silent,
-      // but meh fine for now for dev.
       console.error(
         "Oops! Couldn't parse URL. Please enter a valid PocketCal URL.",
       );
       console.error(error);
+      // TODO maybe show error instead somehow, console.error is too silent,
+      // but meh fine for now for dev.
+      return;
     }
 
-    for (const parsedEventGroup of parsedEventGroups) {
-      const { name, ranges, color } = parsedEventGroup;
-      console.log({ parsedEventGroup });
+    /**
+     * Merge broader settings from the decoded state.
+     *
+     * We use the decoded state's `startDate` if it's earlier,
+     * as otherwise we risk hiding some events earlier than
+     * the current startDate.
+     *
+     * If the decoded state's `includeWeekends` if set to true,
+     * we ensure the current `includeWeekends` is also true,
+     * as otherwise we risk hiding weekends.
+     *
+     * We ignore `showToday` and `firstDayOfWeek`, these seem
+     * less risky and more like viewer preferences, which
+     * don't feel as intuitive to inherit from decoded state.
+     */
+    // Set startDate to the decoded state if it's earlier
+    if (isBefore(decodedState.startDate, startDate)) {
+      setStartDate(decodedState.startDate);
+    }
+    // Set includeWeekends to true if the decoded state has it set
+    if (decodedState.includeWeekends && !includeWeekends) {
+      setIncludeWeekends(true);
+    }
+    // Add event groups from the decoded state
+    for (const { name, ranges } of decodedState.eventGroups) {
       if (eventGroups.length < maxGroups) {
         const newGroup = addEventGroup(name);
         // Set color
@@ -151,6 +173,7 @@ function Sidebar() {
       }
     }
 
+    // Reset the URL input, we've successfully merged all the data
     setRawUrlInput("");
   };
 

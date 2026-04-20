@@ -29,7 +29,7 @@ export const GROUP_COLORS = [
   { hex: "#24d05a99", rgb: "rgba(36, 208, 90, 0.6)" },
 ];
 
-export const getMaxGroups = (isProUser: boolean) => (isProUser ? 16 : 16);
+export const getMaxGroups = (isProUser: boolean) => (isProUser ? 10 : 5);
 
 export type DecodedAppState = Pick<
   AppState,
@@ -356,7 +356,6 @@ export const useStore = create<AppState>((set, get) => ({
   getAppStateFromUrl: () => {
     try {
       const hash = window.location.hash.substring(1);
-      console.log({ hash });
       const decodedSettings = decodeStateFromHash(hash);
       if (decodedSettings !== null) {
         set(decodedSettings);
