@@ -334,7 +334,7 @@ function Sidebar() {
           <div className="setting-item">
             <label htmlFor="add-from-url-input">PocketCal URL:</label>
             <input
-              type="month"
+              type="text"
               id="add-from-url-input"
               value={rawUrlInput}
               onChange={handleUrlInputChange}
