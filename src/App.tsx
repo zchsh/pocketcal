@@ -61,9 +61,7 @@ function App() {
       sidebar.scrollTop = 0;
       sidebar.scrollTo({ top: 0, behavior: "smooth" });
 
-      setTimeout(() => {
-        setIsSidebarHidden(true);
-      }, 300);
+      setIsSidebarHidden(true);
     } else {
       setIsSidebarHidden(false);
     }
