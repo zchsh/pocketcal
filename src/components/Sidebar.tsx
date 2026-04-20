@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useStore, EventGroup, getMaxGroups } from "../store";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import CalIcon from "./icons/CalIcon";
 import PencilIcon from "./icons/PencilIcon";
 import TrashIcon from "./icons/TrashIcon";
 import XIcon from "./icons/XIcon";
 import SaveIcon from "./icons/SaveIcon";
+import MergeIcon from "./icons/MergeIcon";
 import PlusIcon from "./icons/PlusIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import HelpIcon from "./icons/HelpIcon";
 import CopyIcon from "./icons/CopyIcon";
+import { decodeStateFromHash } from "../store";
 
 import "./Sidebar.css";
 
@@ -112,44 +114,44 @@ function Sidebar() {
   };
 
   const handleAddFromUrl = () => {
-    // Temp data for dev
-    const PRETEND_PARSED_EVENT_GROUPS: Pick<
-      EventGroup,
-      "name" | "color" | "ranges"
-    >[] = [
-      {
-        name: "Group from URL",
-        color: "#000",
-        ranges: [
-          {
-            start: new Date().toISOString().split("T")[0],
-            end: addDays(new Date(), 2).toISOString().split("T")[0],
-          },
-        ],
-      },
-    ];
-
     // Extract the data string from the pasted URL
-    let parsedData: Pick<EventGroup, "name" | "color" | "ranges">[] = [];
+    let parsedEventGroups: Pick<EventGroup, "name" | "color" | "ranges">[] = [];
     try {
-      const dataString = rawUrlInput.split("#")[1];
-      alert(JSON.stringify({ rawUrlInput, dataString }));
-    } catch (_error) {
-      // TODO maybe show error instead, alerts suck for everyone,
+      const dataHash = rawUrlInput.split("#")[1];
+      if (dataHash === undefined) {
+        throw new Error("Error: could not extract data hash from URL");
+      }
+      const decodedState = decodeStateFromHash(dataHash);
+      if (decodedState === null) {
+        throw new Error(
+          "Error: could not decode state from data hash: " + dataHash,
+        );
+      }
+      // Set parsed event groups from the decoded state
+      parsedEventGroups = decodedState.eventGroups;
+    } catch (error) {
+      // TODO maybe show error instead somehow, console.error is too silent,
       // but meh fine for now for dev.
-      alert("Oops! Couldn't parse URL. Please enter a valid PocketCal URL.");
+      console.error(
+        "Oops! Couldn't parse URL. Please enter a valid PocketCal URL.",
+      );
+      console.error(error);
     }
-    parsedData = PRETEND_PARSED_EVENT_GROUPS;
 
-    for (const { name, ranges } of parsedData) {
+    for (const parsedEventGroup of parsedEventGroups) {
+      const { name, ranges, color } = parsedEventGroup;
+      console.log({ parsedEventGroup });
       if (eventGroups.length < maxGroups) {
         const newGroup = addEventGroup(name);
+        // Set color
         selectEventGroup(newGroup.id);
         for (const range of ranges) {
           addDateRange(newGroup.id, range);
         }
       }
     }
+
+    setRawUrlInput("");
   };
 
   const footerGroups = () => {
@@ -184,9 +186,7 @@ function Sidebar() {
       </div>
     );
 
-    return isProUser
-      ? [helpAndCopyButtons, proButton]
-      : [proButton, helpAndCopyButtons];
+    return [helpAndCopyButtons, proButton];
   };
 
   return (
@@ -201,7 +201,7 @@ function Sidebar() {
         Event Groups ({eventGroups.length}/{maxGroups})
       </h3>
       <div className="event-groups-list" role="list">
-        {eventGroups.map((group) => (
+        {eventGroups.map((group, idx) => (
           <div
             key={group.id}
             className={`event-group-item ${
@@ -303,6 +303,9 @@ function Sidebar() {
           >
             <PlusIcon height={18} /> Add new group
           </button>
+          <h3>
+            <MergeIcon height={20} /> Merge
+          </h3>
           <div className="setting-item">
             <label htmlFor="add-from-url-input">PocketCal URL:</label>
             <input
@@ -317,7 +320,7 @@ function Sidebar() {
             onClick={handleAddFromUrl}
             disabled={!!editingGroup}
           >
-            <PlusIcon height={18} /> Add group from URL
+            <PlusIcon height={18} /> Add groups from URL
           </button>
         </>
       )}
