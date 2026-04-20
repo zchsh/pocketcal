@@ -13,3 +13,4 @@ I'm rusty and I feel like I barely now React anymore so I'm writin' stuff down.
 
 - Clone this repo
 - Run `npm i`
+- Run `make dev`
