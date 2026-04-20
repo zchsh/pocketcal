@@ -69,14 +69,14 @@ function App() {
 
   return (
     <div className={`app-container ${isSidebarHidden ? "sidebar-hidden" : ""}`}>
-      <button
+      {/*<button
         className="sidebar-toggle"
         onClick={toggleSidebar}
         aria-label={isSidebarHidden ? "Show sidebar" : "Hide sidebar"}
         aria-expanded={!isSidebarHidden}
       >
         <ChevronIcon color="black" />
-      </button>
+      </button>*/}
       <Sidebar />
       <Calendar />
       {showHelpModal && <HelpModal onClose={() => setShowHelpModal(false)} />}

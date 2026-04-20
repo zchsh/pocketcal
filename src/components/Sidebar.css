@@ -12,6 +12,18 @@
     box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        overflow-y: visible;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+    }
+}
+
 .sidebar-header {
     display: flex;
     justify-content: space-between;
@@ -48,19 +60,6 @@ h2 {
 
 .sidebar h3 svg {
     margin-right: 5px;
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        min-width: 0;
-        height: auto;
-        max-height: 50vh;
-        border-right: none;
-        border-bottom: 1px solid #ccc;
-        position: relative;
-        z-index: 10;
-    }
 }
 
 .setting-item {
@@ -209,17 +208,6 @@ input[type="text"].group-name-input {
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        min-width: 0;
-        height: auto;
-        max-height: 50vh;
-        border-right: none;
-        border-bottom: 1px solid #ccc;
-        position: relative;
-        z-index: 10;
-    }
-
     .add-group-button {
         margin-top: 15px;
     }
