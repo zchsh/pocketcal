@@ -23,9 +23,9 @@ const HelpModal: React.FC<HelpModalProps> = ({ onClose }) => {
         <div className="instructions-content">
           <h3>Features</h3>
           <ul>
-            <li>Make a calendar to share dates, like when you're free</li>
-            <li>Your data is saved locally in the URL</li>
-            <li>Share your dates with others by sharing the URL</li>
+            <li>Make a calendar and choose dates to share</li>
+            <li>Your calendar data is saved in the URL</li>
+            <li>Share your calendar by sharing the URL</li>
             <li>Merge multiple calendar URLs to compare them</li>
           </ul>
           <h3>Navigation</h3>
