@@ -1,4 +1,4 @@
-import React, { useState, useEffect, PropsWithChildren } from "react";
+import React, { useState, useEffect } from "react";
 import { useStore, EventGroup, getMaxGroups, DecodedAppState } from "../store";
 import { format, isBefore } from "date-fns";
 import CalIcon from "./icons/CalIcon";
