@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { useStore } from "./store";
 import Sidebar from "./components/Sidebar";
 import Calendar from "./components/Calendar";
-import ChevronIcon from "./components/icons/ChevronIcon";
+// import ChevronIcon from "./components/icons/ChevronIcon";
 import HelpModal from "./components/HelpModal";
 
 function App() {
-  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+  // const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+  const isSidebarHidden = false;
   const getAppStateFromUrl = useStore((state) => state.getAppStateFromUrl);
   const generateShareableUrl = useStore((state) => state.generateShareableUrl);
   const showHelpModal = useStore((state) => state.showHelpModal);
@@ -54,18 +56,18 @@ function App() {
     generateShareableUrl,
   ]);
 
-  const toggleSidebar = () => {
-    const sidebar = document.querySelector(".sidebar");
+  // const toggleSidebar = () => {
+  //   const sidebar = document.querySelector(".sidebar");
 
-    if (!isSidebarHidden && sidebar) {
-      sidebar.scrollTop = 0;
-      sidebar.scrollTo({ top: 0, behavior: "smooth" });
+  //   if (!isSidebarHidden && sidebar) {
+  //     sidebar.scrollTop = 0;
+  //     sidebar.scrollTo({ top: 0, behavior: "smooth" });
 
-      setIsSidebarHidden(true);
-    } else {
-      setIsSidebarHidden(false);
-    }
-  };
+  //     setIsSidebarHidden(true);
+  //   } else {
+  //     setIsSidebarHidden(false);
+  //   }
+  // };
 
   return (
     <div className={`app-container ${isSidebarHidden ? "sidebar-hidden" : ""}`}>
