@@ -13,7 +13,7 @@ import {
 } from "date-fns";
 import LZString from "lz-string";
 
-export const MAX_GROUPS_NOT_PRO = 16;
+export const MAX_GROUPS_NOT_PRO = 10;
 
 export const GROUP_COLORS = [
   { hex: "#8a35de", rgb: "rgb(138, 53, 222)" }, // purple
