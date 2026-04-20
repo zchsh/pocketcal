@@ -203,7 +203,7 @@ function Sidebar() {
           target="_blank"
           className="footer-button"
         >
-          Support PocketCal's creator ↗
+          Support PocketCal ↗
         </a>
       </div>
     );
