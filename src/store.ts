@@ -13,7 +13,7 @@ import {
 } from "date-fns";
 import LZString from "lz-string";
 
-export const MAX_GROUPS = 5;
+export const MAX_GROUPS_NOT_PRO = 16;
 
 export const GROUP_COLORS = [
   { hex: "#8a35de", rgb: "rgb(138, 53, 222)" }, // purple
@@ -29,7 +29,8 @@ export const GROUP_COLORS = [
   { hex: "#24d05a99", rgb: "rgba(36, 208, 90, 0.6)" },
 ];
 
-export const getMaxGroups = (isProUser: boolean) => (isProUser ? 10 : 5);
+export const getMaxGroups = (isProUser: boolean) =>
+  isProUser ? 10 : MAX_GROUPS_NOT_PRO;
 
 export type DecodedAppState = Pick<
   AppState,

@@ -60,7 +60,7 @@ function Sidebar() {
 
   const handleAddGroup = () => {
     if (eventGroups.length < maxGroups) {
-      const newGroup = addEventGroup("New Group");
+      const newGroup = addEventGroup("New Calendar");
       selectEventGroup(newGroup.id);
     }
   };
@@ -174,20 +174,8 @@ function Sidebar() {
     setRawUrlInput("");
   };
 
-  const footerGroups = () => {
-    let proButton = (
-      <div className="sidebar-footer-buttons">
-        <a
-          href="https://www.patreon.com/cassidoo"
-          target="_blank"
-          className="footer-button"
-        >
-          Support PocketCal's creator ↗
-        </a>
-      </div>
-    );
-
-    let helpAndCopyButtons = (
+  const helpAndCopy = () => {
+    return (
       <div className="sidebar-footer-buttons">
         <button
           className="footer-button"
@@ -205,8 +193,20 @@ function Sidebar() {
         </button>
       </div>
     );
+  };
 
-    return [helpAndCopyButtons, proButton];
+  const creatorLink = () => {
+    return (
+      <div className="sidebar-footer-buttons">
+        <a
+          href="https://www.patreon.com/cassidoo"
+          target="_blank"
+          className="footer-button"
+        >
+          Support PocketCal's creator ↗
+        </a>
+      </div>
+    );
   };
 
   return (
@@ -223,7 +223,7 @@ function Sidebar() {
 
       <h3>
         <CalIcon height={20} />
-        Event Groups ({eventGroups.length}/{maxGroups})
+        Calendars ({eventGroups.length}/{maxGroups})
       </h3>
       <div className="event-groups-list" role="list">
         {eventGroups.map((group) => (
@@ -239,7 +239,7 @@ function Sidebar() {
             tabIndex={editingGroup?.id !== group.id ? 0 : -1}
             role="listitem"
             aria-selected={selectedGroupId === group.id}
-            aria-label={`Event group: ${group.name}`}
+            aria-label={`Calendar: ${group.name}`}
           >
             <span
               className="color-indicator"
@@ -261,7 +261,7 @@ function Sidebar() {
                   }}
                   autoFocus
                   className="group-name-input"
-                  aria-label="Edit group name"
+                  aria-label="Edit calendar name"
                 />
                 <div className="group-actions">
                   <button
@@ -270,7 +270,7 @@ function Sidebar() {
                       handleUpdateGroup();
                     }}
                     className="save-button"
-                    aria-label="Save group name"
+                    aria-label="Save calendar name"
                   >
                     <SaveIcon color="#000" />
                   </button>
@@ -326,7 +326,7 @@ function Sidebar() {
             onClick={handleAddGroup}
             disabled={!!editingGroup}
           >
-            <PlusIcon height={18} /> Add new group
+            <PlusIcon height={18} /> Add new calendar
           </button>
           <h3>
             <MergeIcon height={20} /> Merge
@@ -352,7 +352,7 @@ function Sidebar() {
             onClick={handleAddFromUrl}
             disabled={!!editingGroup}
           >
-            <PlusIcon height={18} /> Add groups from URL
+            <PlusIcon height={18} /> Add calendars from URL
           </button>
         </>
       )}
@@ -405,7 +405,10 @@ function Sidebar() {
         </div>
       </>
 
-      <div className="sidebar-footer">{footerGroups()}</div>
+      <div className="sidebar-footer">
+        {creatorLink()}
+        {helpAndCopy()}
+      </div>
     </div>
   );
 }
