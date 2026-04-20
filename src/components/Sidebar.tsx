@@ -329,7 +329,7 @@ function Sidebar() {
             <PlusIcon height={18} /> Add new calendar
           </button>
           <h3>
-            <MergeIcon height={20} /> Merge
+            <MergeIcon height={20} /> Merge calendars
           </h3>
           <div className="setting-item">
             <label htmlFor="add-from-url-input">PocketCal URL:</label>
