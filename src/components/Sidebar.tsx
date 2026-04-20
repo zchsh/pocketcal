@@ -42,6 +42,7 @@ function Sidebar() {
     format(startDate, "yyyy-MM"),
   );
   const [rawUrlInput, setRawUrlInput] = useState("");
+  const [urlInputError, setUrlInputError] = useState(false);
 
   const isValidDate = (rawDate: string): boolean => {
     const [year, month] = rawDate.split("-");
@@ -111,6 +112,7 @@ function Sidebar() {
 
   const handleUrlInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRawUrlInput(e.target.value);
+    setUrlInputError(false);
   };
 
   const handleAddFromUrl = () => {
@@ -128,13 +130,8 @@ function Sidebar() {
         );
       }
       decodedState = rawDecodedState;
-    } catch (error) {
-      console.error(
-        "Oops! Couldn't parse URL. Please enter a valid PocketCal URL.",
-      );
-      console.error(error);
-      // TODO maybe show error instead somehow, console.error is too silent,
-      // but meh fine for now for dev.
+    } catch (_error) {
+      setUrlInputError(true);
       return;
     }
 
@@ -214,17 +211,22 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-      <h1 className="logo">
-        Pocket<span className="logo-cal">Cal</span>{" "}
-        {isProUser && <span className="pro-badge">Pro</span>}
-      </h1>
+      <div className="sidebar-header">
+        <h1 className="logo">
+          Pocket<span className="logo-cal">Cal</span>{" "}
+          {isProUser && <span className="pro-badge">Pro</span>}
+        </h1>
+        <a href="/" target="_blank" className="new-link">
+          New ↗
+        </a>
+      </div>
 
       <h3>
         <CalIcon height={20} />
         Event Groups ({eventGroups.length}/{maxGroups})
       </h3>
       <div className="event-groups-list" role="list">
-        {eventGroups.map((group, idx) => (
+        {eventGroups.map((group) => (
           <div
             key={group.id}
             className={`event-group-item ${
@@ -338,6 +340,13 @@ function Sidebar() {
               onChange={handleUrlInputChange}
             />
           </div>
+          {urlInputError ? (
+            <p className="input-error-message">
+              Dang it, we can't seem to parse this URL.
+              <br />
+              Please enter a valid PocketCal URL.
+            </p>
+          ) : null}
           <button
             className="add-group-button"
             onClick={handleAddFromUrl}
